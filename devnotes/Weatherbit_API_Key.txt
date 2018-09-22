@@ -1,0 +1,4 @@
+Main Site:	https://www.weatherbit.io/api
+Key:  		18da28e4817e4610a145da23ca77fd26
+Docs:		https://www.weatherbit.io/api/weather-current 
+		https://www.weatherbit.io/api/weather-forecast-16-day
