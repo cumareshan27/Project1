@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home Improvement</title>
+</head>
+<body>
+
+<h1>Improve your home! </h1>
+
+<h2>Add a Task</h2>
+<form action="/action_page.php">
+    What task would you like to add?<br>
+    <select class="home">
+      <option value="task" >Paint</option>
+      <option value="task" >Mow</option>
+      <option value="task" >Rake</option>
+      <option value="task" >Change Filter</option>
+    </select> <br>
+    Frequency?<br>
+    <input type="radio" name="type" value="monthly" checked>Monthly<br>
+    <input type="radio" name="type" value="seasonal">Seasonal
+    <select>
+        <option value="season">Winter</option>
+        <option value="season">Spring</option>
+        <option value="season">Summer</option>
+        <option value="season">Fall</option>
+      </select> <br>
+  </form>
+  <button type="button">Add</button>
+
+
+<h2 id="seasonalTask">Seasonal To-Dos</h2>
+
+<table>
+    <tr>
+      <th>Status</th>
+      <th>Task Name</th>
+      <th>Location</th>
+      <th>Days</th>
+      <th>Shop</th>
+    </tr>
+    <tr>
+      <td><input type="checkbox"></td>
+      <td>Paint</td>
+      <td>Bedroom</td>
+      <td>14</td>
+      <td><button type="button">Go</button></td>
+    </tr>
+    <tr>
+      <td><input type="checkbox"></td>
+      <td>Rake</td>
+      <td>Garden</td>
+      <td>14</td>
+      <td><button type="button">Go</button></td>
+    </tr>
+    <tr>
+      <td><input type="checkbox"></td>
+      <td>Change Filter</td>
+      <td>Attic</td>
+      <td>5</td>
+      <td><button type="button">Go</button></td>
+    </tr>
+    <tr>
+      <td><input type="checkbox"></td>
+      <td>Mow Yard</td>
+      <td>Front Yard</td>
+      <td>14</td>
+      <td><button type="button">Go</button></td>
+    </tr>
+  </table>
+
+<h2 id="doneTask">Task Completed</h2>
+
+<table>
+  <tr>
+    <th>Status</th>
+    <th>Task Name</th>
+    <th>Location</th>
+    <th>Days Left</th>
+    <th>Shop</th>
+  </tr>
+
+</table>
+
+</body>
+</html>
