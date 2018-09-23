@@ -1,0 +1,15 @@
+
+
+"https://api.bestbuy.com/v1/products/8880044.json?apiKey=YourAPIKey"
+"https://api.bestbuy.com/v1/stores(region=ut)?format=json&show=storeId,city,region&apiKey=YourAPIKey"
+"https://api.bestbuy.com/v1/products(categoryPath.id=abcat0901005&color%20in(white,bisque,stainless-steel))?format=json&show=sku,name,salePrice&apiKey=YourAPIKey"
+
+"https://api.bestbuy.com/v1/products(search=oven&search=stainless&search=steel)?format=json&show=sku,name,salePrice,image&apiKey=ALmkuUbT4AP1EGu1W3toKALf"  
+
+https://api.bestbuy.com/v1/products(search=fridge&search=stainless&search=steel)?format=json&show=sku,name,salePrice,image&apiKey=ALmkuUbT4AP1EGu1W3toKALf
+
+"https://api.bestbuy.com/v1/categories?show=id,url&format=json&apiKey=ALmkuUbT4AP1EGu1W3toKALf"
+
+API link with add to cart, and product description 
+
+https://api.bestbuy.com/v1/products(search=phones&search=stainless&search=steel)?format=json&show=sku,name,longDescription,salePrice,image,addToCartUrl&apiKey=ALmkuUbT4AP1EGu1W3toKALf
