@@ -159,7 +159,7 @@ var task10 = {
 }
 
 
-var housename = "Kumar's House";
+// var housename = "Kumar's House";
 // var housename = "Joe's House";
 // var housename = "Suraj's House";
 // var housename = "Steve's House";
@@ -167,9 +167,13 @@ var housename = "Kumar's House";
 
 var taskArr = [task1, task2, task3, task4, task5, task6, task7, task8, task9, task10];
 
+// for (i = 0; i < taskArr.length; i++) {
+//     // database.ref().child("/house/" + housename + "/tasks/").set(taskArr[i]);
+//     database.ref().child("/house/" + housename + "/tasks/" + taskArr[i].taskid).set(taskArr[i]);
+// }
+var taskArr = [task1, task2, task3, task4, task5, task6, task7, task8, task9, task10];
 for (i = 0; i < taskArr.length; i++) {
-    // database.ref().child("/house/" + housename + "/tasks/").set(taskArr[i]);
-    database.ref().child("/house/" + housename + "/tasks/" + taskArr[i].taskid).set(taskArr[i]);
+    database.ref().child("/tasks/task" + taskArr[i].taskid).set(taskArr[i]);
 }
 
 
