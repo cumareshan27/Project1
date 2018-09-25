@@ -5,12 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home Improvement</title>
+
+  <!-- Moment Library CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+  <!-- JQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
+
 </head>
 <body>
 
 <h1>Improve your home! </h1>
 
-<h2>Add a Task</h2>
+<!-- <h2>Add a Task</h2>
 <form action="/action_page.php">
     What task would you like to add?<br>
     <select class="home">
@@ -29,61 +39,69 @@
         <option value="season">Fall</option>
       </select> <br>
   </form>
-  <button type="button">Add</button>
+  <button type="button">Add</button> -->
 
 
-<h2 id="seasonalTask">Seasonal To-Dos</h2>
+<h2 id="seasonalTask">Tasks To Do</h2>
 
-<table>
+<table id="TaskTable">
     <tr>
+        <th>Status </th>
+        <th>Task Name</th>
+        <th>Shop</th>
+    </tr>
+      <!-- <tr>
       <th>Status</th>
       <th>Task Name</th>
-      <th>Location</th>
       <th>Days</th>
       <th>Shop</th>
-    </tr>
-    <tr>
+    </tr> -->
+    <!-- <tr>
       <td><input type="checkbox"></td>
       <td>Paint</td>
-      <td>Bedroom</td>
       <td>14</td>
       <td><button type="button">Go</button></td>
     </tr>
     <tr>
       <td><input type="checkbox"></td>
       <td>Rake</td>
-      <td>Garden</td>
       <td>14</td>
-      <td><button type="button">Go</button></td>
+      <td><button onclick="Users/Suraj%20Telhan/Documents/Coding-Boot-Camp/Project1/walmart.html">Shop</button></td>
     </tr>
     <tr>
       <td><input type="checkbox"></td>
       <td>Change Filter</td>
-      <td>Attic</td>
       <td>5</td>
       <td><button type="button">Go</button></td>
     </tr>
     <tr>
       <td><input type="checkbox"></td>
       <td>Mow Yard</td>
-      <td>Front Yard</td>
       <td>14</td>
       <td><button type="button">Go</button></td>
-    </tr>
+    </tr> -->
   </table>
 
-<h2 id="doneTask">Task Completed</h2>
+<h2 id="doneTask">Tasks Completed</h2>
 
-<table>
+<table id="DoneTable">
   <tr>
     <th>Status</th>
     <th>Task Name</th>
-    <th>Location</th>
+<<<<<<< HEAD
     <th>Days Left</th>
+=======
+>>>>>>> 3010ac1ce8a04d55bf0f55885962b018b2054e1b
     <th>Shop</th>
   </tr>
-
 </table>
 
+<script src="./assets/javascript/taskPageLoad.js"></script>
 </body>
 </html>
+
+<script>
+function myFunction() {
+    document.getElementById("demo").style.color = "red";
+}
+</script>
