@@ -123,6 +123,62 @@ function loadTasks(whichHouse) {
     });
 }
 
+function shopWM(item) {
+
+    var queryURL = "https://cors.io/?http://api.walmartlabs.com/v1/search?apiKey=ncprrc5qq4kqukxgnpjn69b2&query="
+    var searchFor = queryURL + item;
+    $.ajax({
+        url: searchFor,
+        method: "GET"
+    }).then(function (response) {
+
+        console.log(searchFor);
+        response = JSON.parse(response);
+
+        // console.log(response);
+        // console.log(response.items)
+        // console.log(response.items[0].name)
+        // console.log(response.items[0].shortDescription)
+        // console.log(response.items[0].salePrice)
+        // console.log(response.items[0].thumbnailImage)
+        // console.log(response.items[0].addToCartUrl)    
+
+
+        // var imageURL = response.items[0].thumbnailImage;
+        var imageURL = response.items[0].mediumImage;
+        var productImage = $("<img>");
+        productImage.attr("src", imageURL);
+        productImage.attr("alt", "ProductImage");
+
+        var productName = $("<div>")
+        var responseArr = [];
+
+        for (var i = 0; i < response.items.length; i++) {
+            responseArr.push(response.items[i])
+    
+
+        }
+       
+        for (var i = 0; i < 4; i++) {
+            var bigdiv = $("#productArea");
+            var productDiv = $(`
+                <div id="name">Name: ${response.items[i].name} </div>
+                <div id="description">Description:-${response.items[i].shortDescription} </div>
+                <div id="Price">Price:- ${response.items[i].salePrice}</div>
+                <div id="imageArea${i}"><img src="${response.items[i].mediumImage}" alt = "Product Image"></div>
+                <div><button id="addcart${i}" type="button">Add to Cart</button></div>
+            `)
+            //Appends the each groped product into the main DIV("#productArea")
+            bigdiv.append(productDiv);
+            var cartURL = responseArr[i].addToCartUrl;
+            document.getElementById("addcart" + i).onclick = function () {
+                location.href = cartURL;
+            };
+        }
+
+    });
+}
+
 function shopBB(item) {
     var queryURL = "https://api.bestbuy.com/v1/products("
     var queryOpts = ")?format=json&show=sku,name,longDescription,salePrice,image,addToCartUrl&apiKey=ALmkuUbT4AP1EGu1W3toKALf"
@@ -132,6 +188,7 @@ function shopBB(item) {
         method: "GET"
     }).then(function (response) {
 
+        console.log(searchFor);
         var imageURL = response.products[0].image;
         var productImage = $("<img>");
         productImage.attr("src", imageURL);
@@ -154,6 +211,7 @@ function shopBB(item) {
         // console.log("Product URl:- " + response.products[0].addToCartUrl);
 
         //code to create a string literal to display the products grouped. Retrieving the data from array which holds the responses fro API. 
+        $('#productArea').empty();
         for (var i = 0; i < 4; i++) {
             var bigdiv = $("#productArea");
             var productDiv = $(`
@@ -161,7 +219,7 @@ function shopBB(item) {
                 <div id="name">Name: ${response.products[i].name} </div>
                 <div id="description">Description:-${response.products[i].longDescription} </div>
                 <div id="Price">Price:- ${response.products[i].salePrice}</div>
-                <div id="imageArea${i}"><img src="${response.products[i].image}" alt = "Product Image"></div>
+                <div id="imageArea${i}"><img src="${response.products[i].image}" alt = "Product Image" height="300" width="300"></div>
                 <div><button id="addcart${i}" type="button">Add to Cart</button></div>
             `)
             //Appends the each grouped product into the main DIV("#productArea")
@@ -287,9 +345,46 @@ $(document).ready(function () {
 
     $(document).on("click", ".shopbutton", function (event) {
         // var buttonID = $(this).id;
-        var searchTerm = $(this).data("term");
+        var searchValue = $(this).data("term");
         var searchSite = $(this).data("vendor");
 
+        if (searchSite === "B") {
+            console.log("Best Buy Selected");
+            var words = searchValue.split(' ');
+            if (words.length >= 3) {
+                var searchTerm = "search=" + words[0] + "&search=" + words[1] + "&search=" + words[2]; 
+            }
+            else if (words.length === 2) {
+                var searchTerm = "search=" + words[0] + "&search=" + words[1]; 
+            }
+            else if (words.length === 1) {
+                var searchTerm = "search=" + words[0]; 
+            }
+            else {
+                console.log("Got big problems here!");
+            }
+            shopBB(searchTerm);
+        }
+
+
+        if (searchSite === "W") {
+            console.log("Walmart Selected");
+            var searchTerm = searchValue;
+            // var words = searchValue.split(' ');
+            // if (words.length >= 3) {
+            //     var searchTerm = "search=" + words[0] + "&search=" + words[1] + "&search=" + words[2]; 
+            // }
+            // else if (words.length === 2) {
+            //     var searchTerm = "search=" + words[0] + "&search=" + words[1]; 
+            // }
+            // else if (words.length === 1) {
+            //     var searchTerm = "search=" + words[0]; 
+            // }
+            // else {
+            //     console.log("Got big problems here!");
+            // }
+            shopWM(searchTerm);
+        }
     });
 
 
