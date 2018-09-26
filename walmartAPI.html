@@ -9,24 +9,35 @@
 </head>
 
 <body>
-    <div id="itemsArea">
+    <div id="productArea">
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
 
-        var queryURL = "https://cors.io/http://api.walmartlabs.com/v1/search?apiKey=ncprrc5qq4kqukxgnpjn69b2&query=rake"
+        var queryURL = "https://cors.io/?http://api.walmartlabs.com/v1/search?apiKey=ncprrc5qq4kqukxgnpjn69b2&query=smoke detector"
         $.ajax({
             url: queryURL,
             method: "GET"
         }).then(function (response) {
 
-            var imageURL = response.items[0].thumbnailImage;
-            var itemsImage = $("<img>");
-            itemsImage.attr("src", imageURL);
-            itemsImage.attr("alt", "itemsImage");
+            response = JSON.parse(response);
 
-            var itemsName = $("<div>")
+            console.log(response);
+            console.log(response.items)
+            console.log(response.items[0].name)
+            console.log(response.items[0].shortDescription)
+            console.log(response.items[0].salePrice)
+            console.log(response.items[0].thumbnailImage)
+            console.log(response.items[0].addToCartUrl)    
+
+
+            var imageURL = response.items[0].thumbnailImage;
+            var productImage = $("<img>");
+            productImage.attr("src", imageURL);
+            productImage.attr("alt", "ProductImage");
+
+            var productName = $("<div>")
             var responseArr = [];
 
             for (var i = 0; i < response.items.length; i++) {
@@ -34,26 +45,18 @@
         
 
             }
-            //console.log(responseArr);
-        
-            // console.log("Item Name:- " + response.items[0].name);
-            // console.log("Item Long Description:- " + response.items[0].longDescription);
-            // console.log("Item Sale Price:- " + response.items[0].salePrice);
-            // console.log("Item Image:- " + response.items[0].image);
-            // console.log("Item URl:- " + response.items[0].addToCartUrl);
-
-            //code to create a string literal to display the items grouped. Retrieving the data from array which holds the responses fro API. 
+           
             for (var i = 0; i < 4; i++) {
-                var bigdiv = $("#itemsArea");
-                var itemsDiv = $(`
+                var bigdiv = $("#productArea");
+                var productDiv = $(`
                     <div id="name">Name: ${response.items[i].name} </div>
                     <div id="description">Description:-${response.items[i].shortDescription} </div>
                     <div id="Price">Price:- ${response.items[i].salePrice}</div>
-                    <div id="imageArea${i}"><img src="${response.items[i].thumbnailImage}" alt = "items Image"></div>
+                    <div id="imageArea${i}"><img src="${response.items[i].thumbnailImage}" alt = "Product Image"></div>
                     <div><button id="addcart${i}" type="button">Add to Cart</button></div>
                 `)
-                //Appends the each groped items into the main DIV("#itemsArea")
-                bigdiv.append(itemsDiv);
+                //Appends the each groped product into the main DIV("#productArea")
+                bigdiv.append(productDiv);
                 var cartURL = responseArr[i].addToCartUrl;
                 document.getElementById("addcart" + i).onclick = function () {
                     location.href = cartURL;
