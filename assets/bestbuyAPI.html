@@ -28,14 +28,16 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="css/shave.js"></script>
+    <!-- <script src="dist/shve.js"></script> -->
     <script type="text/javascript">
 
-        queryParams = $("#search-term")
-        .val()
-        .trim();
+        // queryParams = $("#search-term")
+        // .val()
+        // .trim();
 
-        var queryURL = "https://api.bestbuy.com/v1/products(search="+queryParams+"&search=stainless&search=steel)?format=json&show=sku,name,longDescription,salePrice,image,addToCartUrl&apiKey=ALmkuUbT4AP1EGu1W3toKALf"
-       // var queryURL = "https://api.bestbuy.com/v1/products(search=phones&search=stainless&search=steel)?format=json&show=sku,name,longDescription,salePrice,image,addToCartUrl&apiKey=ALmkuUbT4AP1EGu1W3toKALf"
+        //var queryURL = "https://api.bestbuy.com/v1/products(search="+queryParams+"&search=stainless&search=steel)?format=json&show=sku,name,longDescription,salePrice,image,addToCartUrl&apiKey=ALmkuUbT4AP1EGu1W3toKALf"
+       var queryURL = "https://api.bestbuy.com/v1/products(search=phones&search=stainless&search=steel)?format=json&show=sku,name,longDescription,salePrice,image,addToCartUrl&apiKey=ALmkuUbT4AP1EGu1W3toKALf"
         $.ajax({
             url: queryURL,
             method: "GET"
@@ -68,20 +70,23 @@
                 var productDiv = $(`
                     <div id="sku">SKU: ${response.products[i].sku} </div>
                     <div id="name">Name: ${response.products[i].name} </div>
-                    <div id="description">Description:-${response.products[i].longDescription} </div>
+                    <p class="description" >Description:-${response.products[i].longDescription} </p>
                     <div id="Price">Price:- ${response.products[i].salePrice}</div>
-                    <div id="imageArea${i}"><img src="${response.products[i].image}" alt = "Product Image"></div>
+                    <div id="imageArea${i}"><img src="${response.products[i].image}" alt = "Product Image" height="42" width="42"></div>
                     <div><button id="addcart${i}" type="button">Add to Cart</button></div>
                 `)
+
                 //Appends the each groped product into the main DIV("#productArea")
                 bigdiv.append(productDiv);
+                shave('p', 50);
                 var cartURL = responseArr[i].addToCartUrl;
                 document.getElementById("addcart" + i).onclick = function () {
                     location.href = cartURL;
                 };
             }
-
+            
         });
+        //shave('p', 10);
     </script>
 </body>
 
