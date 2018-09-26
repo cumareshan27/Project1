@@ -5,48 +5,71 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Welcome to Home Improvement</title>
 
-  <!-- Moment Library CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+  
 
-  <!-- JQuery CDN -->
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w"
+    crossorigin="anonymous">
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/siimple@3.1.1/dist/siimple.min.css">
 
+  
+    <title></title>
+
+  <header>
+  <h1>Home Improvement</h1>
+</header>
+  
 </head>
 
+
+
 <body>
+    <div class="siimple-grid">
+        <div class="siimple-grid-row">
+            <div class="siimple-grid-col siimple-grid-col--4"><img src="assets\img\paint.jpg"></div>
+            <div class="siimple-grid-col siimple-grid-col--4"><img src="assets\img\home.jpg"></div>
+            <div class="siimple-grid-col siimple-grid-col--4"><img src="assets\img\decking.jpeg"></div>
+        </div>
 
-  <h1>Home Improvement</h1>
+    <div class="siimple-box siimple-box--orange">
+        <div class="siimple-box-title">To-Do list:</div>
+        <div class="siimple-box-subtitle">Find your home selection below:</div>
+        <div class="siimple-box-detail">
+        </div>
+    </div>
+    
 
-  <p>Welcome! Please find your home or create one</p>
+      <select class="siimple-label">Select an option: </label><br>
+      <option value="Home">Joe</option>
+      <option value="Home">Steve</option>
+      <option value="Home">Suraj</option>
+      <option value="Home">Kumar</option>
+    </select>
+  
+    <button type="button">Go</button>
+  
+    <form action="/action_page.php">
+      What's the name of your home?<br>
+      <input type="text" name="" class="findHome"><br>
+      <button type="button" class="createHome">Create</button>
 
-  <select class="home" id="HomeDropDown">
-  </select>
-
-<!-------------------------------------------------------------------------------------->
-  <!-- Must use FORM with action to transition pages properly -->
-  <!-- FORM is a block element and forces subsequent elements to the next line -->
-  <!-- Will need to use CSS properties (float) to keep elements inline if desired -->
-<!-------------------------------------------------------------------------------------->
-<form action="task.html">
-  <!-- <form> -->
-    <input id="GoButton" type="submit" value="Go">
-  </form>
-
-
-  <form>
-    What's the name of your home?<br>
-    <input type="text" name="" class="findHome" id="HomeInput"><br>
-    <button type="button" class="createHome" id="AddHouseBtn">Create</button>
-  </form>
-
-  <script src="./assets/javascript/homePageLoad.js"></script>
+      <div class="siimple-grid">
+          <div class="siimple-grid-row">
+              <div class="siimple-grid-col siimple-grid-col--4"></div>
+              <div class="siimple-grid-col siimple-grid-col--4"></div>
+              <div class="siimple-grid-col siimple-grid-col--4"></div>
+      </div>
 
 
+
+
+      
+  <div class="siimple-footer siimple-footer--medium" align="center">
+    <strong>###1ManWolfPack</strong>
+
+</div>
+</div>
 </body>
 
 </html>
