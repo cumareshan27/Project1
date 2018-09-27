@@ -8,32 +8,27 @@ var config = {
     messagingSenderId: "846174705720"
 };
 
-// var config = {
-//     apiKey: "AIzaSyDalr_tNRibx70GlgRV73vQawfvzOjisZI",
-//     authDomain: "bootcampfirebase.firebaseapp.com",
-//     databaseURL: "https://bootcampfirebase.firebaseio.com",
-//     projectId: "bootcampfirebase",
-//     storageBucket: "bootcampfirebase.appspot.com",
-//     messagingSenderId: "676152556364"
-// };
-
 firebase.initializeApp(config);
 
 var database = firebase.database();
 var homesArray = [];
 var addIt = true;
 var nextKey = 0;
+var nextHomeKey = 0;
 var houseID;
 var houseName;
-
-// var houseName = "1";
 var taskDiff;
 var taskFreq;
 var doneArray = [];
+var homeValidation = [];
+var insertHouse = false;
 
 
+//*********************************************************************************************/
+// Define the function to load tasks based on the property selected/created
+//*********************************************************************************************/
 function loadTasks(whichHouse) {
-    nextKey = 0;   //this variable was declared in both and had to be zero'd out
+    nextKey = 0;
     console.log("houseid = " + whichHouse);
     $("#TaskTable").empty();
     $("#DoneTable").empty();
@@ -77,14 +72,14 @@ function loadTasks(whichHouse) {
                     var taskStatus = "Abort!"
                 }
 
-                //<td><input class="donechkbox" type="checkbox" id="ChkBox_${taskID}"></td>   ✓
-                //<td><button class="checkbutton" id="btn_${taskID}">►</button><td>
+
                 var taskLoad = `<tr id="TableTodo_${taskID}">
                                     <td><button class="checkbutton" id="btn_${taskID}" data-parent="TableTodo_${taskID}" data-task="${taskID}">►</button><td>
-                                    <td>${taskName}</td>
+                                    <td class="HomeTask">${taskName}</td>
                                     <td><button class="shopbutton" type="button" id="shop_${taskID}" data-term="${taskTerm}" data-vendor="${taskWhere}" data-next"${taskNext}" data-last="${taskLast}">Shop Now</button></td>
                                     </tr>
                                     `
+                // $("#TaskRecords tr:first").after().append(taskload);
                 $("#TaskTable").append(taskLoad);
             });
         });
@@ -95,13 +90,8 @@ function loadTasks(whichHouse) {
                 var doneTask = childSnapshot.val().task;
                 var doneProperty = childSnapshot.val().property;
                 var doneDate = childSnapshot.val().date;
-                console.log("----------------")
-                // console.log(doneProperty);
-                // console.log(doneTask);
 
-                console.log(houseID + " === " + doneProperty);
                 if (parseInt(houseID) === parseInt(doneProperty)) {
-                    console.log("Found a match! =" + doneTask);
                     var currentDTX = moment().unix();
                     var doneDT = moment(doneDate, "YYYYMMDDHHmmss");
                     var doneDTX = moment(doneDT).unix();
@@ -123,6 +113,9 @@ function loadTasks(whichHouse) {
     });
 }
 
+//*********************************************************************************************/
+// Define the function to shop Walmart for selected items
+//*********************************************************************************************/
 function shopWM(item) {
 
     var queryURL = "https://cors.io/?http://api.walmartlabs.com/v1/search?apiKey=ncprrc5qq4kqukxgnpjn69b2&query="
@@ -132,19 +125,8 @@ function shopWM(item) {
         method: "GET"
     }).then(function (response) {
 
-        console.log(searchFor);
         response = JSON.parse(response);
 
-        // console.log(response);
-        // console.log(response.items)
-        // console.log(response.items[0].name)
-        // console.log(response.items[0].shortDescription)
-        // console.log(response.items[0].salePrice)
-        // console.log(response.items[0].thumbnailImage)
-        // console.log(response.items[0].addToCartUrl)    
-
-
-        // var imageURL = response.items[0].thumbnailImage;
         var imageURL = response.items[0].mediumImage;
         var productImage = $("<img>");
         productImage.attr("src", imageURL);
@@ -155,20 +137,25 @@ function shopWM(item) {
 
         for (var i = 0; i < response.items.length; i++) {
             responseArr.push(response.items[i])
-    
+
 
         }
-       
+        $('#productArea').empty();
         for (var i = 0; i < 4; i++) {
             var bigdiv = $("#productArea");
             var productDiv = $(`
+                <div class="ItemDetails">
                 <div id="name">Name: ${response.items[i].name} </div>
                 <div id="description">Description:-${response.items[i].shortDescription} </div>
                 <div id="Price">Price:- ${response.items[i].salePrice}</div>
                 <div id="imageArea${i}"><img src="${response.items[i].mediumImage}" alt = "Product Image"></div>
+                <p></p>
                 <div><button id="addcart${i}" type="button">Add to Cart</button></div>
+                </div>
             `)
+            //*********************************************************************************************/
             //Appends the each groped product into the main DIV("#productArea")
+            //*********************************************************************************************/
             bigdiv.append(productDiv);
             var cartURL = responseArr[i].addToCartUrl;
             document.getElementById("addcart" + i).onclick = function () {
@@ -179,6 +166,9 @@ function shopWM(item) {
     });
 }
 
+//*********************************************************************************************/
+// Define the function to shop Best Buy for selected items
+//*********************************************************************************************/
 function shopBB(item) {
     var queryURL = "https://api.bestbuy.com/v1/products("
     var queryOpts = ")?format=json&show=sku,name,longDescription,salePrice,image,addToCartUrl&apiKey=ALmkuUbT4AP1EGu1W3toKALf"
@@ -188,7 +178,6 @@ function shopBB(item) {
         method: "GET"
     }).then(function (response) {
 
-        console.log(searchFor);
         var imageURL = response.products[0].image;
         var productImage = $("<img>");
         productImage.attr("src", imageURL);
@@ -199,31 +188,29 @@ function shopBB(item) {
 
         for (var i = 0; i < response.products.length; i++) {
             responseArr.push(response.products[i])
-            //console.log("Product Sku:- " + response.products[i].sku);
-
         }
-        //console.log(responseArr);
-        // console.log("Product Sku:- " + response.products[0].sku);
-        // console.log("Product Name:- " + response.products[0].name);
-        // console.log("Product Long Description:- " + response.products[0].longDescription);
-        // console.log("Product Sale Price:- " + response.products[0].salePrice);
-        // console.log("Product Image:- " + response.products[0].image);
-        // console.log("Product URl:- " + response.products[0].addToCartUrl);
 
+        //*********************************************************************************************/
         //code to create a string literal to display the products grouped. Retrieving the data from array which holds the responses fro API. 
+        //*********************************************************************************************/
         $('#productArea').empty();
         for (var i = 0; i < 4; i++) {
             var bigdiv = $("#productArea");
             var productDiv = $(`
+                <div class="ItemDetails">
                 <div id="sku">SKU: ${response.products[i].sku} </div>
                 <div id="name">Name: ${response.products[i].name} </div>
-                <div id="description">Description:-${response.products[i].longDescription} </div>
+                <p class="description">Description:-${response.products[i].longDescription} </p>
                 <div id="Price">Price:- ${response.products[i].salePrice}</div>
                 <div id="imageArea${i}"><img src="${response.products[i].image}" alt = "Product Image" height="300" width="300"></div>
+                <p></p>
                 <div><button id="addcart${i}" type="button">Add to Cart</button></div>
-            `)
+                </div>            `)
+            //*********************************************************************************************/
             //Appends the each grouped product into the main DIV("#productArea")
+            //*********************************************************************************************/
             bigdiv.append(productDiv);
+            shave('p', 50);
             var cartURL = responseArr[i].addToCartUrl;
             document.getElementById("addcart" + i).onclick = function () {
                 location.href = cartURL;
@@ -244,52 +231,76 @@ $(document).ready(function () {
             snapshot.forEach(function (childSnapshot) {
                 var homeName = childSnapshot.val().housename;
                 var dropInsert = `<option value="Home data-value="${homeName}">${homeName}</option>`
-                // var dropInsert = `<a class="dropdown-item" data-value="${homeName}" href="#">${homeName}</a>`
                 $("#HomeDropDown").append(dropInsert);
             });
         });
     });
 
+    //*********************************************************************************************/
+    // Allow for the creation of a new property
+    //*********************************************************************************************/
     $("#AddHouseBtn").on("click", function (event) {
-        event.preventDefault();
+        // event.preventDefault();
 
         var submitText = $("#HomeInput").val().trim();
+        $('#TaskHomeDiv').css('display', 'inline-block');
+        $('#DoneHomeDiv').css('display', 'inline-block');
 
         database.ref("/tasks/").on("value", function (snapshotmain) {
             var homesRef = firebase.database().ref('house');
-            homesRef.once('value', function (snapshot) {
+            homesRef.once('value').then(function (snapshot) {
                 snapshot.forEach(function (childSnapshot) {
                     houseID = childSnapshot.val().houseid;
                     houseName = childSnapshot.val().housename;
-
 
                     homesArray.push({
                         houseid: houseID,
                         housename: houseName,
                     });
                 });
-                nextKey = (homesArray.length + 1);
-            });
+                //*********************************************************************************************/
+                // Make sure the home doesn't already exist 
+                //*********************************************************************************************/
+                homeValidation = homesArray.filter(obj => {
+                    return obj.housename === submitText
+                });
 
-            //*************************************************************************/
-            //*  Push new house to database
-            //*************************************************************************/
-            var houseAdd = {
-                houseid: nextKey,
-                housename: submitText,
-            }
-            var houseArr = [houseAdd];
-            homesRef.child(submitText).set(houseArr[0]);
+                if (homeValidation.length === 0) {
+                    insertHouse = true;
+                }
+                else {
+                    insertHouse = false;
+                    $("#HomeInput").val("Exists - Choose another");
+                }
+
+                //*************************************************************************/
+                //*  Push new house to database
+                //*************************************************************************/
+                if (insertHouse === true) {
+                    nextHomeKey = parseInt(homesArray.length) + 1;
+                    var houseAdd = {
+                        houseid: parseInt(nextHomeKey),
+                        housename: submitText,
+                    }
+                    var houseArr = [houseAdd];
+                    homesRef.child(submitText).set(houseArr[0]);
+                    $("#HomeInput").val("");
+                    loadTasks(nextHomeKey);
+                }
+            });
         });
-        loadTasks(nextKey);
     });
 
 
+    //*********************************************************************************************/
+    // Use the house selected from the dropdown
+    //*********************************************************************************************/
     $(document).on("click", "#GoButton", function (event) {
         event.preventDefault();
 
         var submitText = $("#HomeDropDown option:selected").text();
-        console.log(submitText);
+        $('#TaskHomeDiv').css('display', 'inline-block');
+        $('#DoneHomeDiv').css('display', 'inline-block');
 
         database.ref("/tasks/").on("value", function (snapshotmain) {
             var homesRef = firebase.database().ref('house');
@@ -302,9 +313,10 @@ $(document).ready(function () {
                         houseid: houseID,
                         housename: houseName,
                     });
-                    // console.log(homesArray);
                 });
-                // console.log(homesArray);
+                //*********************************************************************************************/
+                // Get the key value for the selected house
+                //*********************************************************************************************/
                 var result = homesArray.filter(obj => {
                     return obj.housename === submitText
                 });
@@ -315,6 +327,9 @@ $(document).ready(function () {
     });
 
 
+    //*********************************************************************************************/
+    // Process the action of completing a task and checking it off
+    //*********************************************************************************************/
     $(document).on("click", ".checkbutton", function (event) {
         var parentElem = $(this).attr('data-parent')
         var btnID = $(this).attr('id');
@@ -324,12 +339,12 @@ $(document).ready(function () {
         $("#" + btnID).prop("disabled", true);
 
         //*********************************************************************************************/
-        // Compare current task by hours and round - Figure out if its due or not
+        // Compare current task by hours and round off - Figure out if its due again or not
         //*********************************************************************************************/
         var doneTaskID = $(this).attr('data-task')
         var doneDateTime = moment().format("YYYYMMDDHHmmss");
         var doneKey = nextKey;
-        var donepropID = houseName;
+        var donepropID = houseID;
         var doneAdd = {
             date: doneDateTime,
             property: donepropID,
@@ -341,24 +356,33 @@ $(document).ready(function () {
             var doneRef = firebase.database().ref('done');
             doneRef.child(doneKey).set(doneArr[0]);
         });
+        nextKey++;
     });
 
+    //*********************************************************************************************/
+    // If they click the shop button
+    //*********************************************************************************************/
     $(document).on("click", ".shopbutton", function (event) {
         // var buttonID = $(this).id;
         var searchValue = $(this).data("term");
         var searchSite = $(this).data("vendor");
 
+        $('#ShopArea').css('display', 'inline-block');
+
+        //*********************************************************************************************/
+        // If the object is a Best Buy search, build the relevant search string
+        //*********************************************************************************************/
         if (searchSite === "B") {
             console.log("Best Buy Selected");
             var words = searchValue.split(' ');
             if (words.length >= 3) {
-                var searchTerm = "search=" + words[0] + "&search=" + words[1] + "&search=" + words[2]; 
+                var searchTerm = "search=" + words[0] + "&search=" + words[1] + "&search=" + words[2];
             }
             else if (words.length === 2) {
-                var searchTerm = "search=" + words[0] + "&search=" + words[1]; 
+                var searchTerm = "search=" + words[0] + "&search=" + words[1];
             }
             else if (words.length === 1) {
-                var searchTerm = "search=" + words[0]; 
+                var searchTerm = "search=" + words[0];
             }
             else {
                 console.log("Got big problems here!");
@@ -366,23 +390,12 @@ $(document).ready(function () {
             shopBB(searchTerm);
         }
 
-
+        //*********************************************************************************************/
+        // If the object is a Walmart search, build the relevant search string
+        //*********************************************************************************************/
         if (searchSite === "W") {
             console.log("Walmart Selected");
             var searchTerm = searchValue;
-            // var words = searchValue.split(' ');
-            // if (words.length >= 3) {
-            //     var searchTerm = "search=" + words[0] + "&search=" + words[1] + "&search=" + words[2]; 
-            // }
-            // else if (words.length === 2) {
-            //     var searchTerm = "search=" + words[0] + "&search=" + words[1]; 
-            // }
-            // else if (words.length === 1) {
-            //     var searchTerm = "search=" + words[0]; 
-            // }
-            // else {
-            //     console.log("Got big problems here!");
-            // }
             shopWM(searchTerm);
         }
     });
